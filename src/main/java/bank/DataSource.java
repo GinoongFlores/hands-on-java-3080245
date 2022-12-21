@@ -65,11 +65,41 @@ public class DataSource {
     
     return customer;
   }
+
+  // Construct account from data source
+  public static Account getAccount(int account_id) {
+    // get account database
+    String sql = "SELECT * FROM accounts WHERE id = ?";
+    Account account = null; 
+
+    try(Connection connection = connect();
+
+    PreparedStatement statement = connection.prepareStatement(sql)) {
+
+      statement.setInt(1, account_id);
+
+      try(ResultSet resultSet = statement.executeQuery()) {
+        account = new Account(
+          resultSet.getInt("id"), 
+          resultSet.getString("type"), 
+          resultSet.getDouble("balance"));
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return account;
+    
+  }
   
 
   public static void main (String[] args) {
    Customer customer = getCustomer("clillea8@nasa.gov"); 
    System.out.println(customer.getName());
+
+   Account account = getAccount(customer.getAccountId()); 
+   System.out.println(account.getBalance());        
   }
 
 }
