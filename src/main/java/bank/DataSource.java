@@ -11,11 +11,16 @@ public class DataSource {
     Connection connection = null; 
 
     try {
+      // * We need to use try & catch block as the getConnection() method throws an exception
       connection =  DriverManager.getConnection(db_file);
       System.out.println("We're Connected!");
     } 
     
     catch(SQLException e) {
+      /* 
+      * We can also print out the stack trace of the exception using printStackTrace() method.
+      * This will print out the actual exception that was thrown. 
+      */
       e.printStackTrace();
     }
 
