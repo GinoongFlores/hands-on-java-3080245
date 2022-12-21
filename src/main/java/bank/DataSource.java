@@ -2,6 +2,8 @@ package bank;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DataSource {
@@ -28,7 +30,46 @@ public class DataSource {
     
   }
 
-  public static void main (String[] args) {
-    connect(); 
+  // An object that represent a specific customer from the database
+  public static Customer getCustomer(String username) {
+    // get customer database
+
+    /*  
+      * We can append the username String to the SQL query but we should never send a raw user input as part of a database query. 
+      * Because this could be a malicious input used in an SQL injection attack that is meant to steal data.
+      * Instead we used a question mark (?) as a placeholder for the username.
+    */
+    String sql = "SELECT * FROM customers WHERE username = ?";
+    Customer customer = null;
+    try (Connection connection = connect();
+
+    // Because we have a placeholder on our sql query the object for this is PreparedStatement which is part of the java.sql package.
+    // PreparedStatement are AutoCloseable so we can use the try-with-resources statement to automatically close the connection.
+    PreparedStatement statement = connection.prepareStatement(sql)) {
+
+      statement.setString(1, username); // We use the setString() method to set the value of the first placeholder to the username String.
+
+      // ResultSet are also AutoCloseable so we can use it again with the try-with-resources statement to automatically close the connection.
+      try(ResultSet resultSet = statement.executeQuery()) {
+        customer = new Customer(
+          resultSet.getInt("id"), 
+          resultSet.getString("name"), 
+          resultSet.getString("username"),
+          resultSet.getString("password"),
+          resultSet.getInt("account_Id"));
+      } 
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    
+    return customer;
   }
+  
+
+  public static void main (String[] args) {
+   Customer customer = getCustomer("clillea8@nasa.gov"); 
+   System.out.println(customer.getName());
+  }
+
 }
