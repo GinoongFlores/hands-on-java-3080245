@@ -15,7 +15,7 @@ public class DataSource {
     try {
       // * We need to use try & catch block as the getConnection() method throws an exception
       connection =  DriverManager.getConnection(db_file);
-      System.out.println("We're Connected!");
+      // System.out.println("We're Connected!");
     } 
     
     catch(SQLException e) {
