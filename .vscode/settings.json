@@ -19,7 +19,7 @@
   "screencastMode.onlyKeyboardShortcuts": true,
   "terminal.integrated.fontSize": 14,
   "workbench.activityBar.visible": true,
-  "workbench.colorTheme": "One Monokai",
+  "workbench.colorTheme": "Monokai Pro (Filter Octagon)",
   "workbench.fontAliasing": "antialiased",
   "workbench.statusBar.visible": true
 }
