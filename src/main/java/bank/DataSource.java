@@ -15,7 +15,7 @@ public class DataSource {
     try {
       // * We need to use try & catch block as the getConnection() method throws an exception
       connection =  DriverManager.getConnection(db_file);
-      System.out.println("We're Connected!");
+      // System.out.println("We're Connected!");
     } 
     
     catch(SQLException e) {
@@ -92,8 +92,33 @@ public class DataSource {
     return account;
     
   }
-  
 
+  // Update database with new balance
+  public static void updateAccountBalance(int accountId, double balance) {
+    // We have two placeholders here to set the new or update the balance value
+    String sql = "UPDATE accounts set balance = ? WHERE id = ?";
+
+    try(
+      Connection connection = connect(); 
+      PreparedStatement statement = connection.prepareStatement(sql);
+    
+    ){
+      // Update the placeholder within the sql query with the value that were passed in. 
+      statement.setDouble(1, balance); 
+      statement.setInt(2, accountId);
+
+      // For insert, update or delete statements we used the executeUpdate() method instead of executeQuery() method.
+      statement.executeUpdate();
+    } catch(SQLException e) {
+      e.printStackTrace();
+      
+    } 
+    
+
+  }
+  
+  /*  
+  * This is main method is only for testing purposes.
   public static void main (String[] args) {
    Customer customer = getCustomer("clillea8@nasa.gov"); 
    System.out.println(customer.getName());
@@ -101,5 +126,6 @@ public class DataSource {
    Account account = getAccount(customer.getAccountId()); 
    System.out.println(account.getBalance());        
   }
+  */
 
 }
