@@ -59,6 +59,7 @@ public class Customer {
     this.accountId = accountId;
   }
 
+  // we use isAuthenticated rather than getAuthenticated because it's a boolean value and it's more readable.
   public boolean isAuthenticated() {
     return this.authenticated;
   }
